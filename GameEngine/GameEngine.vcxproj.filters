@@ -27,9 +27,15 @@
     <ClInclude Include="src\GameEngine\EntryPoint.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameEngine\Log.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GameEngine\Application.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameEngine\Log.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>

@@ -20,6 +20,9 @@ project "GameEngine"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "hzpch.h"
+    pchsource "GameEngine/src/hzpch.cpp"
+
     files
     {
         "%{prj.name}/src/**.h",
@@ -28,6 +31,7 @@ project "GameEngine"
 
     includedirs
     {
+        "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include"
     }
 

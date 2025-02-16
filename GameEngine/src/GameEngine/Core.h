@@ -9,3 +9,6 @@
 #else
 	#error GameEngine only support Windows!
 #endif
+
+// Shift del bit 1 a sinistra di x posizioni. 
+#define BIT(x) (1 << x)

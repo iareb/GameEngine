@@ -12,6 +12,13 @@ workspace "GameEngine"
 -- ad es.: DEBUG-WINDOWS-X64
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "GameEngine/vendor/GLFW/include"
+
+-- Con questa istruzione, il file premake di GLFW viene inserito in questo file
+include "GameEngine/vendor/GLFW"
+
 project "GameEngine"
     location "GameEngine"
     kind "SharedLib"
@@ -32,13 +39,21 @@ project "GameEngine"
     includedirs
     {
         "%{prj.name}/src",
-        "%{prj.name}/vendor/spdlog/include"
+        "%{prj.name}/vendor/spdlog/include",    
+        "%{IncludeDir.GLFW}"
+    }
+
+    links
+    {
+        "GLFW",
+        "opengl32.lib",
+        "dwmapi.lib"
     }
 
     -- I filtri sono utili per configurazioni che si applicano a una specifica piattaforma
     filter "system:windows"
         cppdialect "C++17"
-        staticruntime "On"
+        staticruntime "on"
         systemversion "latest"
 
         defines 
@@ -97,7 +112,7 @@ project "Sandbox"
 
     filter "system:windows"
         cppdialect "C++17"
-        staticruntime "On"
+        staticruntime "on"
         systemversion "latest"
 
         defines 

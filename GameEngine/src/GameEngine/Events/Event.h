@@ -14,7 +14,7 @@ namespace GameEngine {
 		None = 0,
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
 		AppTick, AppUpdate, AppRender,
-		KeyPressed, KeyReleased,
+		KeyPressed, KeyReleased, KeyTyped,
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
@@ -48,6 +48,9 @@ namespace GameEngine {
 		friend class EventDispatcher;
 	
 	public:
+		// Controlliamo se l'evento è stato gestito o no.
+		bool Handled = false;
+
 		// Queste 3 funzioni sono virtuali pure: devono essere implementate
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
@@ -63,9 +66,6 @@ namespace GameEngine {
 			return GetCategoryFlags() & category;
 		}
 
-	protected:
-		// Controlliamo se l'evento è stato gestito o no.
-		bool m_Handled = false;
 	};
 
 
@@ -101,7 +101,7 @@ namespace GameEngine {
 				// *(T*)&m_Event → tratta m_Event come un riferimento a T(tipo specifico dell'evento).
 				// Chiama la funzione handler func passando l'evento castato.
 				// Memorizza il risultato in m_Handled, indicandone l'elaborazione.
-				m_Event.m_Handled = func(*(T*)&m_Event);
+				m_Event.Handled = func(*(T*)&m_Event);
 				
 				return true;
 			}

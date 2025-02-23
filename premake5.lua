@@ -15,9 +15,13 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "GameEngine/vendor/GLFW/include"
+IncludeDir["Glad"] = "GameEngine/vendor/Glad/include"
+IncludeDir["ImGui"] = "GameEngine/vendor/imgui"
 
--- Con questa istruzione, il file premake di GLFW viene inserito in questo file
+-- Con questa istruzione, i file premake di queste librerie vengono inseriti in questo file
 include "GameEngine/vendor/GLFW"
+include "GameEngine/vendor/Glad"
+include "GameEngine/vendor/imgui"
 
 project "GameEngine"
     location "GameEngine"
@@ -40,12 +44,16 @@ project "GameEngine"
     {
         "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include",    
-        "%{IncludeDir.GLFW}"
+        "%{IncludeDir.GLFW}",
+        "%{IncludeDir.Glad}",
+        "%{IncludeDir.ImGui}"
     }
 
     links
     {
         "GLFW",
+        "Glad",
+        "ImGui",
         "opengl32.lib",
         "dwmapi.lib"
     }
@@ -53,13 +61,14 @@ project "GameEngine"
     -- I filtri sono utili per configurazioni che si applicano a una specifica piattaforma
     filter "system:windows"
         cppdialect "C++17"
-        staticruntime "on"
+        staticruntime "On"
         systemversion "latest"
 
         defines 
         {
             "HZ_PLATFORM_WINDOWS",
             "HZ_BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
         }
 
         postbuildcommands
@@ -70,14 +79,17 @@ project "GameEngine"
     
     filter "configurations:Debug"
         defines "HZ_DEBUG"
+        buildoptions "/MDd"
         symbols "On"
     
     filter "configurations:Release"
         defines "HZ_RELEASE"
+        buildoptions "/MD"
         optimize "On"
 
     filter "configurations:Dist"
         defines "HZ_DIST"
+        buildoptions "/MD"
         optimize "On"
 
     filter "action:vs2022"
@@ -112,7 +124,7 @@ project "Sandbox"
 
     filter "system:windows"
         cppdialect "C++17"
-        staticruntime "on"
+        staticruntime "On"
         systemversion "latest"
 
         defines 
@@ -122,14 +134,17 @@ project "Sandbox"
 
     filter "configurations:Debug"
         defines "HZ_DEBUG"
+        buildoptions "/MDd"
         symbols "On"
     
     filter "configurations:Release"
         defines "HZ_RELEASE"
+        buildoptions "/MD"
         optimize "On"
 
     filter "configurations:Dist"
         defines "HZ_DIST"
+        buildoptions "/MD"
         optimize "On"
 
     filter "action:vs2022"

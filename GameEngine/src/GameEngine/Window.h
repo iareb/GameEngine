@@ -42,6 +42,9 @@ namespace GameEngine {
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
+		// Ritorna la finestra di GLFW
+		virtual void* GetNativeWindow() const = 0;
+
 		// L'implementazione di questa funzione sarà diversa per piattaforma.
 		static Window* Create(const WindowProps& props = WindowProps());
 	};

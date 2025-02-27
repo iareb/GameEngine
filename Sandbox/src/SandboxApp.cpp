@@ -11,12 +11,19 @@ public:
 
 	void OnUpdate() override
 	{
-		HZ_INFO("ExampleLayer::Update");
+		// HZ_INFO("ExampleLayer::Update");
+
+		if (GameEngine::Input::IsKeyPressed(HZ_KEY_TAB))
+			HZ_INFO("Tab key is pressed!");
 	}
 
 	void OnEvent(GameEngine::Event& event) override
 	{
-		HZ_TRACE("{0}", event.ToString());
+		if (event.GetEventType() == GameEngine::EventType::KeyPressed)
+		{
+			GameEngine::KeyPressedEvent& e = (GameEngine::KeyPressedEvent&)event;
+			HZ_TRACE("{0}", (char)e.GetKeyCode());
+		}
 	}
 };
 

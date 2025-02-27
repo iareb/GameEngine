@@ -45,8 +45,6 @@ namespace GameEngine {
 		// Se l'evento e è di tipo WindowCloseEvent, il dispatcher chiamerà OnWindowClose()
 		dispatcher.Dispatch<WindowCloseEvent>(HZ_BIND_EVENT_FN(Application::OnWindowClose));
 
-		HZ_CORE_TRACE("{0}", e.ToString());
-
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
 			if (e.Handled)
@@ -71,9 +69,7 @@ namespace GameEngine {
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
-
-			auto [x, y] = Input::GetMousePosition();
-			HZ_CORE_TRACE("{0}, {1}", x, y);
+			
 
 			m_Window->OnUpdate();
 		}

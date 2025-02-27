@@ -7,6 +7,8 @@
 #include "GameEngine/Events/Event.h"
 #include "GameEngine/Events/ApplicationEvent.h"
 
+#include "ImGui/ImGuiLayer.h"
+
 namespace GameEngine {
 
 	class HAZEL_API Application
@@ -30,7 +32,9 @@ namespace GameEngine {
 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 

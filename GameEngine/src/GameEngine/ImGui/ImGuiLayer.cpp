@@ -65,7 +65,7 @@ namespace GameEngine {
         ImGui_ImplGlfw_InitForOpenGL(window, true);
 
         // Inizializza l'implementazione di ImGui per OpenGL 3.0 (specificando la versione di GLSL #version 410).
-        // Questo è un passaggio fondamentale per configurare l'uso di ImGui con OpenGL.
+        // Questo Ã¨ un passaggio fondamentale per configurare l'uso di ImGui con OpenGL.
         ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
@@ -89,7 +89,7 @@ namespace GameEngine {
     {
         ImGuiIO& io = ImGui::GetIO();
         Application& app = Application::Get();
-        io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
+        io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
 
         // Rendering
         ImGui::Render();

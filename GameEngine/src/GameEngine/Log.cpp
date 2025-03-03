@@ -9,9 +9,9 @@ namespace GameEngine {
 	void Log::Init() 
 	{
 		/*
-		* %T è il timestamp
-		* %n è il nome del logger
-		* %v%$ è il messaggio vero e proprio
+		* %T Ã¨ il timestamp
+		* %n Ã¨ il nome del logger
+		* %v%$ Ã¨ il messaggio vero e proprio
 		*/
 		spdlog::set_pattern("%^[%T] %n: %v%$");
 		s_CoreLogger = spdlog::stdout_color_mt("HAZEL");

@@ -7,7 +7,7 @@
 
 namespace GameEngine {
 
-	class HAZEL_API LayerStack
+	class LayerStack
 	{
 	public:
 		LayerStack() = default;

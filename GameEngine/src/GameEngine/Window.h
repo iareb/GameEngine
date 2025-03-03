@@ -7,7 +7,7 @@
 
 namespace GameEngine {
 
-	// Propriet‡ della finestra.
+	// Propriet√† della finestra.
 	struct WindowProps
 	{
 		std::string Title;
@@ -25,7 +25,7 @@ namespace GameEngine {
 
 	// Interfaccia che fornisce una rappresentazione astratta di una finestra
 	// indipendente dalla piattaforma. Le finestre si riferiscono a sistemi basati su desktop.
-	class HAZEL_API Window
+	class Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
@@ -45,7 +45,7 @@ namespace GameEngine {
 		// Ritorna la finestra di GLFW
 		virtual void* GetNativeWindow() const = 0;
 
-		// L'implementazione di questa funzione sar‡ diversa per piattaforma.
+		// L'implementazione di questa funzione sar√† diversa per piattaforma.
 		static Window* Create(const WindowProps& props = WindowProps());
 	};
 

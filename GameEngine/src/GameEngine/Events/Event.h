@@ -43,7 +43,7 @@ namespace GameEngine {
 
 
 	// Classe base per gli eventi.
-	class HAZEL_API Event
+	class Event
 	{
 		friend class EventDispatcher;
 	

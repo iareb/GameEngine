@@ -5,7 +5,7 @@
 #include "GameEngine/Events/MouseEvent.h"
 #include "GameEngine/Events/ApplicationEvent.h"
 
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace GameEngine {
 
@@ -48,18 +48,15 @@ namespace GameEngine {
 		}
 
 		// Crea una finestra e un contesto OpenGL associato.
-		// Il terzo argomento è il titolo della finestra.
-		// Il quarto è GLFWmonitor *monitor. Indica il monitor da usare se vuoi una finestra fullscreen. Con nullptr ottieni una finestra standard. 
-		// Il quinto è share. È un contesto OpenGL da condividere, se vuoi condividere risorse tra più finestre. Con nullptr, non condividi nessun contesto.
+		// Il terzo argomento Ã¨ il titolo della finestra.
+		// Il quarto Ã¨ GLFWmonitor *monitor. Indica il monitor da usare se vuoi una finestra fullscreen. Con nullptr ottieni una finestra standard. 
+		// Il quinto Ã¨ share. Ãˆ un contesto OpenGL da condividere, se vuoi condividere risorse tra piÃ¹ finestre. Con nullptr, non condividi nessun contesto.
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		
-		// Rende il contesto di m_Window il contesto OpenGL corrente sul thread che sta eseguendo la chiamata.
-		glfwMakeContextCurrent(m_Window);	
 
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		HZ_CORE_ASSERT(status, "Failed to initialize Glad!");
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
 		
-		// Associa un puntatore utente alla finestra. È un modo per salvare dati personalizzati all’interno della struttura GLFWwindow.
+		// Associa un puntatore utente alla finestra. Ãˆ un modo per salvare dati personalizzati allâ€™interno della struttura GLFWwindow.
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		
 		SetVSync(true);
@@ -67,9 +64,9 @@ namespace GameEngine {
 
 		// Settiamo i callback di GLFW
 
-		// Questa funzione di GLFW consente di registrare una funzione (o lambda) che verrà chiamata ogni volta che la finestra cambia dimensione.
-		// Il secondo parametro è una lambda che accetta tre parametri: 
-		// GLFWwindow* window: puntatore alla finestra in cui si è verificato il cambiamento.
+		// Questa funzione di GLFW consente di registrare una funzione (o lambda) che verrÃ  chiamata ogni volta che la finestra cambia dimensione.
+		// Il secondo parametro Ã¨ una lambda che accetta tre parametri: 
+		// GLFWwindow* window: puntatore alla finestra in cui si Ã¨ verificato il cambiamento.
 		// int width e int height : le nuove dimensioni della finestra
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 		{
@@ -92,8 +89,8 @@ namespace GameEngine {
 		});
 
 		// key: il codice del tasto premuto (o rilasciato). Ad esempio GLFW_KEY_A, GLFW_KEY_ESCAPE, ecc.
-		// scancode: il codice di scansione del tasto (dipende dal sistema operativo / hardware). Può servire per differenziare layout di tastiera particolari.
-		// action: indica se il tasto è stato premuto (GLFW_PRESS), rilasciato (GLFW_RELEASE) o ripetuto (GLFW_REPEAT).
+		// scancode: il codice di scansione del tasto (dipende dal sistema operativo / hardware). PuÃ² servire per differenziare layout di tastiera particolari.
+		// action: indica se il tasto Ã¨ stato premuto (GLFW_PRESS), rilasciato (GLFW_RELEASE) o ripetuto (GLFW_REPEAT).
 		// mods: bitmask che indica i modifier keys (SHIFT, CTRL, ALT, ecc.) in quel momento. Ad esempio, se SHIFT era premuto, troverai GLFW_MOD_SHIFT.
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
@@ -183,24 +180,17 @@ namespace GameEngine {
 		// Dopo questa chiamata, le funzioni glfwGetKey, glfwGetMouseButton e simili forniscono lo stato aggiornato dei dispositivi di input.
 		glfwPollEvents();
 
-		// Scambia i buffer front e back nel contesto OpenGL associato a m_Window.
-		// In un contesto double-buffered, ci sono due buffer di disegno:
-		// front buffer: quello visualizzato sullo schermo in questo momento.
-		// back buffer: quello su cui stai effettivamente disegnando (rendering) in questo frame.
-		// Quando si finisce di disegnare il frame, il back buffer diventa il front buffer (e quindi appare a schermo). 
-		// Il vecchio front buffer diventa il back buffer, pronto per disegnare il frame successivo.
-		// Questo evita lo “sfarfallio” (flickering) che succederebbe se disegnassi direttamente sul buffer visualizzato a schermo. 
-		// Con il double buffering, disegni “dietro le quinte” e poi mostri tutto in un colpo solo quando il frame è completo.
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
+
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)
 	{
-		// glfwSwapInterval: imposta l’intervallo di swap per il contesto OpenGL corrente, 
+		// glfwSwapInterval: imposta lâ€™intervallo di swap per il contesto OpenGL corrente, 
 		// ovvero quante volte attendere il vertical blank (sincronizzazione verticale) prima di eseguire lo swap dei buffer.
-		// Si può immaginare come il momento in cui il monitor finisce di aggiornare l’immagine di un frame e si prepara a disegnare il prossimo.
-		// Il V-blank è la brevissima pausa tra la fine del disegno di un frame e l’inizio del successivo.
-		// Il V-sync (Vertical Synchronization) è la tecnica che sincronizza lo swap dei buffer con il vertical blank del monitor.
+		// Si puÃ² immaginare come il momento in cui il monitor finisce di aggiornare lâ€™immagine di un frame e si prepara a disegnare il prossimo.
+		// Il V-blank Ã¨ la brevissima pausa tra la fine del disegno di un frame e lâ€™inizio del successivo.
+		// Il V-sync (Vertical Synchronization) Ã¨ la tecnica che sincronizza lo swap dei buffer con il vertical blank del monitor.
 		if (enabled)
 			// interval = 1: V-sync abilitato. Sincronizza lo swap con ogni refresh (di solito 60 volte al secondo).
 			glfwSwapInterval(1);

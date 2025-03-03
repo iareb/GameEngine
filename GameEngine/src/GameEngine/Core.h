@@ -1,11 +1,15 @@
 #pragma once
 
 #ifdef HZ_PLATFORM_WINDOWS
+#if HZ_DYNAMIC_LINK
 	#ifdef HZ_BUILD_DLL
-		#define HAZEL_API _declspec(dllexport)
+		#define _declspec(dllexport)
 	#else
-		#define HAZEL_API _declspec(dllimport)
+		#define _declspec(dllimport)
 	#endif // HZ_BUILD_DLL
+#else 
+	#define HAZEL_API
+#endif
 #else
 	#error GameEngine only support Windows!
 #endif
@@ -26,6 +30,6 @@
 // Shift del bit 1 a sinistra di x posizioni. 
 #define BIT(x) (1 << x)
 
-// Creiamo un oggetto callable che, quando invocato, eseguirà OnEvent sull'oggetto this (l'istanza di Application) 
-// e gli passerà il primo argomento (std::placeholders::_1) al posto del segnaposto.
+// Creiamo un oggetto callable che, quando invocato, eseguirÃ  OnEvent sull'oggetto this (l'istanza di Application) 
+// e gli passerÃ  il primo argomento (std::placeholders::_1) al posto del segnaposto.
 #define HZ_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)

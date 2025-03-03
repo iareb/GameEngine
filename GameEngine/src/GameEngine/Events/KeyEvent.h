@@ -5,17 +5,17 @@
 namespace GameEngine {
 
 	// Classe base per gli eventi che coinvolgono la tastiera.
-	class HAZEL_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
 		// Getter per il key code.
 		inline int GetKeyCode() const { return m_KeyCode; }
 
-		// Controlliamo se l'evento è in una o entrambe le categorie.
+		// Controlliamo se l'evento Ã¨ in una o entrambe le categorie.
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
 	protected:
-		// Il setter è incorporato nel costruttore.
+		// Il setter Ã¨ incorporato nel costruttore.
 		KeyEvent(int keycode)
 			: m_KeyCode(keycode) {}
 
@@ -23,7 +23,7 @@ namespace GameEngine {
 	};
 
 	// Classe per l'evento: premere un tasto della tastiera.
-	class HAZEL_API KeyPressedEvent : public KeyEvent
+	class KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keycode, int repeatCount)
@@ -44,7 +44,7 @@ namespace GameEngine {
 		int m_RepeatCount;
 	};
 
-	class HAZEL_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode)
@@ -60,7 +60,7 @@ namespace GameEngine {
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
 
-	class HAZEL_API KeyTypedEvent : public KeyEvent
+	class KeyTypedEvent : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(int keycode)

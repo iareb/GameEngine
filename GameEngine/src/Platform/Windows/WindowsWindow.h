@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameEngine/Window.h"
+#include "GameEngine/Renderer/GraphicsContext.h"
 
 #include "GLFW/glfw3.h"
 
@@ -30,8 +31,10 @@ namespace GameEngine {
 
 	private:
 		GLFWwindow* m_Window;
+
+		GraphicsContext* m_Context;
 		
-		// Qui è dove salviamo i dati che verranno richiesti da GLFW.
+		// Qui Ã¨ dove salviamo i dati che verranno richiesti da GLFW.
 		// Passiamo solo la struct e non l'intera classe.
 		struct WindowData
 		{

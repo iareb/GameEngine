@@ -13,8 +13,10 @@ namespace GameEngine {
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::None:
+			{
 				HZ_CORE_ASSERT(false, "RendererAPI::None is currently not supported");
 				return nullptr;
+			}
 
 			case RendererAPI::OpenGL:
 				return new OpenGLVertexBuffer(vertices, size);

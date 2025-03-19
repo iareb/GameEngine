@@ -1393,6 +1393,7 @@
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
     <ClInclude Include="src\GameEngine\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\GameEngine\Core\Timestep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GameEngine\Application.cpp">

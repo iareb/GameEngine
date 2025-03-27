@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef HZ_PLATFORM_WINDOWS
 #if HZ_DYNAMIC_LINK
 	#ifdef HZ_BUILD_DLL
@@ -33,3 +35,14 @@
 // Creiamo un oggetto callable che, quando invocato, eseguirà OnEvent sull'oggetto this (l'istanza di Application) 
 // e gli passerà il primo argomento (std::placeholders::_1) al posto del segnaposto.
 #define HZ_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+
+namespace GameEngine {
+	
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	// ad es. std::shared_ptr<Shader> <--> GameEngine::Ref<Shader>
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+
+}
